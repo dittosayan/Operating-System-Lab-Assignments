@@ -1,0 +1,1 @@
+init.c is executed once before starting the initial reader or writer program. reader.c and writer.c are executed next. Both access the read.txt file.

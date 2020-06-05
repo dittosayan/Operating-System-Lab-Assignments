@@ -1,0 +1,1 @@
+Extension to the matrix problem is matrix3.c where m,n and d are passed as command line arguments.

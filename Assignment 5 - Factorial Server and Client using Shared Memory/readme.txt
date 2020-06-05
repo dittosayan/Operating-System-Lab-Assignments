@@ -1,0 +1,1 @@
+Server is executed first and then client. *(num+1) is the turn variable, *(num+2) is the termination variable.

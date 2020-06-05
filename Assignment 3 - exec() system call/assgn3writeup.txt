@@ -1,0 +1,26 @@
+We have created n processes using the fork() system call. Prior to that we have passed executable file names as parameter as command line arguments.
+
+After taking the arguments in the argv array we populate the args array and terminate it by null.
+
+Now we have forked the main process in the following way : 
+
+for(i=0;i<n;i++) {
+ 
+       pid=fork();
+
+       if(pid == 0) {
+            printf("Currently in the driver program, new process created : %d has PID : %d\n",i+1,getpid());
+            execvp(args[i],args);
+            printf("ERROR! Exec call failed\n");
+            exit(0);
+        }
+
+        else
+            wait(NULL);
+}
+
+Once a process is created we use the execvp() system call to pass the arguments and print the process ids in the executable programs.
+
+However, when we execute the assgn3.c file by using ./a.out ./test.txt where test.txt file currently has no execute permission, the system call fails and we get the message "ERROR! Exec call failed".
+
+Now we change the permission of the assgn3.c using chmod 777 test.txt. Now, suppose the test.txt file contains a message such as "Hello world" which is not a shell script it shows an error. However when the "test.txt" contains a message such as "ls -l" which is a terminal command it runs fine and lists the files along with the file permissions.

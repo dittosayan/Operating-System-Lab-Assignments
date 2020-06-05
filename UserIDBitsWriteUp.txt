@@ -1,0 +1,31 @@
+This assignment highlights the significance of the setuid and setgid bit : -
+
+Firstly, let us suppose we have created two users; user1 and user2. Now let us suppose that user1 is the owner of the file test.c and test.txt (which has been uploaded).
+
+1) Executing test.c from user1 by changing the permissions of the test.txt file :
+
+Initally, let test.txt have read and write permissions and test.c have read, write and execute permissions for user1. If we create the executable file test from test.c (by running the command gcc test.c -o test) in the terminal and execute it, the program works fine and the message "Program to check permissions" is printed, or rather appended in the test.txt file because we have opened it in the append mode.
+
+Now, if we change the permissions of test.txt from read, write (rw-) to r-- or --- using the command chmod 400 test.txt or chmod 000 test.txt then the executable file test will execute will run but permission will be denied to write into the test.txt file. Thus although the program runs we will not be able to write into the file.
+
+2) Executing test.c from user2 (i.e the "other" user) :
+
+We change the permissions of the executable file test created from test.c to only read for other users using the command chmod 704 test in user1 and try to execute it in the terminal of user2. Obviously, permission is denied and the error message "-su : ./test : Permission denied" appears on the terminal.
+
+If we change the permission of test to 705 or 707 back again using the chmod command then normal execution occurs which again depends on the permissions user2 has for the test.txt file. If user2 has rw permissions for test.txt then normal execution occurs otherwise it fails to write into the "test.txt" again even though test has been executed.
+
+3) Executing test.c from user3 (i.e. a user in the same "group" as user1):
+
+We change the permissions of the executable file test created from test.c to only read for other users using the command chmod 744 test in user1 and try to execute it in the terminal of user2. Obviously, permission is denied and the error message "-su : ./test : Permission denied" appears on the terminal.
+
+If we change the permission of test to 750 or 770 back again using the chmod command then normal execution occurs which again depends on the permissions user23has for the test.txt file. If user3 has rw permissions for test.txt then normal execution occurs otherwise it fails to write into the "test.txt" again even though test has been executed.
+
+4) Executing test by setting userid and groupid bits:
+
+Suppose the executable file "test" has the following permissions : -rwxr-xr-x and the file "test.txt" has the following permissions : -rw-r--r--.
+
+Now if we execute test in user it won't be able to write into "test.txt". But if we change the permissions of "test.txt" by setting the user id bit through the command "chmod u+s test" or "chmod 4755" then we see that it has executed properly and the message "Program to check permissions" is appended to the "test.txt" file. This is because setuid bit sets the effective user id of the program to the user id of the owner and it thus now executes as user1.
+
+Also a point to be noted here is that, if we change the permission of "test" to -rwxr-xr-- then it fails to execute through user2. This is because setuid occurs only if the execution is successful. If test fails to execute in the first place it will never acquire the same permissions as user1 or the owner of the file.
+
+The functioning of gid has been demonstrated in the same way as gid itself with the same exact results as uid with the only exception that the program upon execution will execute with the same priviliges of the file's group rather than the file's owner, i.e. if the group has privileges to execute test and write into "test.txt" the "other" user will also have them.
